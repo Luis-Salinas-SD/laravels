@@ -2,6 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 
+//- Importación de los controlladores
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\CursoController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,14 +17,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', HomeController::class);
+
+//Rutas por método
+/* Route::get('curso', [CursoController::class, 'index']);
+Route::get('curso/create', [CursoController::class, 'create']);
+Route::get('curso/{curso}', [CursoController::class, 'show']); */
+
+
+//Ruta por grupo
+
+Route::controller(CursoController::class)->group(function () {
+    //- Route::get('<Ruta>', '<Método>');
+    Route::get('curso', 'index');
+    Route::get('curso/create', 'create');
+    Route::get('curso/{curso}', 'show');
 });
-
-Route::get('crear/{id}/editar', function ($id) {
-    return 'Estamos en crear el id: '. $id;
-})->where(["id", "[0-9]+"]);
-
-Route::get('notas/{id}/editar', function ($id) {
-    return 'Aquí podremos editar la nota: '.$id;
-})->where('id', '[0-9]+');
